@@ -1,16 +1,16 @@
-class s
-{
-public:
-	s(int mat[4][5])
-	{
-		findSolution(mat);
-	}
+// class s
+// {
+// public:
+// 	s(int mat[4][5])
+// 	{
+// 		findSolution(mat);
+// 	}
 
-	~s{}
+// 	~s{}
 
-private:
-	findSolution(int mat[4][5])
-	{
+// private:
+// 	findSolution(int mat[4][5])
+// 	{
 		
-	}
-};
+// 	}
+// };

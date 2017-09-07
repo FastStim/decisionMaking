@@ -1,9 +1,11 @@
+using namespace std;
+
 class mm
 {
 public:
 	int e = 0;
 	
-	mm(int mat[4][5])
+	mm(int **mat)
 	{
 		e = findSolution(mat);
 	}
@@ -11,17 +13,19 @@ public:
 	~mm(){}
 
 	int getE() {
-		return e
-;	}
+		return e;
+	}
 
 private:
-	int findSolution(int mat[4][5]) 
+	int findSolution(int **mat) 
 	{
-		int max = numeric_limits<int>::min();
-		int min = numeric_limits<int>::max();
-
+		int max;
+		int min;
 		for (int j = 0; j < 5; j++)
 		{
+			max = numeric_limits<int>::min();
+			min = numeric_limits<int>::max();
+
 			for (int i = 0; i < 4; i++)
 			{
 
