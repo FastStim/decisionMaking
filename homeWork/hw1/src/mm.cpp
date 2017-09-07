@@ -19,25 +19,23 @@ public:
 private:
 	int findSolution(int **mat) 
 	{
-		int max;
+		int max = numeric_limits<int>::min();
 		int min;
-		for (int j = 0; j < 5; j++)
+		for (int i = 0; i < 4; i++)
 		{
-			max = numeric_limits<int>::min();
 			min = numeric_limits<int>::max();
 
-			for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 5; j++)
 			{
-
 				int temp = mat[i][j];
-				if (temp > max)
-					max = temp;
+				if (temp < min)
+					min = temp;
 			}
 
-			if (min > max)
-				min = max;
+			if (max < min)
+				max = min;
 		}
 
-		return min;
+		return max;
 	}
 };

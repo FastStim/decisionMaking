@@ -2,6 +2,6 @@
 #include <limits>
 
 #include "mm.cpp"
-#include "s.cpp"
+#include "sg.cpp"
 
 using namespace std;
