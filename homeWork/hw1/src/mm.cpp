@@ -4,6 +4,7 @@ class mm
 {
 public:
 	int e = 0;
+	int p = 0;
 	
 	mm(int **mat)
 	{
@@ -14,6 +15,10 @@ public:
 
 	int getE() {
 		return e;
+	}
+
+	int getP() {
+		return p;
 	}
 
 private:
@@ -33,7 +38,10 @@ private:
 			}
 
 			if (max < min)
+			{
 				max = min;
+				p = i+1;
+			}
 		}
 
 		return max;

@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS= -fpermissive
+CFLAGS= -fpermissive -std=c++11
 
 all:
 	@$(CC) $(CFLAGS) -c src/main.cpp -I obj/ -o obj/main.o

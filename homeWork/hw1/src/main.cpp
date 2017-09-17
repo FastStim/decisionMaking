@@ -13,7 +13,7 @@
 
 int main()
 {
-
+	float c = 0.87;
 	int** mat = new int*[4];
 	
 	mat[0] = new int[5] {15, 10,  0, -6, 12};
@@ -23,8 +23,18 @@ int main()
 
 	mm* kritFirst = new mm(mat);
 	cout << "Минимаксный критерий:" << endl;
-	cout << "e = " << kritFirst->getE() << endl;
+	cout << "Проект № " << kritFirst->getP() << endl;
+	cout << "e = " << kritFirst->getE() << endl << endl;
 
+	sg* kritSecond = new sg(mat);
+	cout << "Критерий Сэвиджа:" << endl;
+	cout << "Проект № " << kritSecond->getP() << endl;
+	cout << "e = " << kritSecond->getE() << endl << endl;
+
+	gu* kritThird = new gu(mat, c);
+	cout << "Критерий Гурвица:" << endl;
+	cout << "Проект № " << kritThird->getP() << endl;
+	cout << "e = " << kritThird->getE() << endl << endl;
 	return 0;
 }
 
