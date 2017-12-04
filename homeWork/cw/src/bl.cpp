@@ -25,9 +25,9 @@ private:
 	vector<vector<int>> bPrice;
 
 	vector<flash> parser(string);
-	void bl::printHeader(vector<int>);
-	void bl::printLine(vector<int>);
-	void bl::printSpace(int, int);
+	void printHeader(vector<int>);
+	void printLine(vector<int>);
+	void printSpace(int, int);
 };
 
 bl::bl (string model)
