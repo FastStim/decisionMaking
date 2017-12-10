@@ -16,6 +16,7 @@ public:
 	void mPrintTable();
 	void bPrintTable(string);
 	void editBO(string);
+	void saveBO(string);
 
 private:
 	vector<flash> allFlash;
@@ -426,6 +427,57 @@ void bl::editBO(string curBO)
 		bPrice = BO;
 
 }
+
+void bl::saveBO(string curBO)
+{
+	string csv = "";
+	vector<vector<int>> BO;
+	if (curBO == "bType")
+	{
+		BO = bType;
+		csv = "type.csv";
+	}
+	else if (curBO == "bSize")
+	{
+		BO = bSize;
+		csv = "size.csv";
+	}
+	else if (curBO == "rSpeed")
+	{
+		BO = bRSpeed;
+		csv = "rSpeed.csv";
+	}
+	else if (curBO == "wSpeed")
+	{
+		BO = bWSpeed;
+		csv = "wSpeed.csv";
+	}
+	else if (curBO == "price")
+	{
+		BO = bPrice;
+		csv = "price.csv";
+	}
+
+
+	ofstream file;
+	file.open(csv, ios::out);
+	if (file)
+	{
+		for (int i = 0; i < BO.size(); i++)
+		{
+			string line = "";
+			for (int j = 0; j < BO[i].size(); j++)
+			{
+				line += to_string(BO[i][j]) + ";";
+			}
+
+			file << line << endl;
+		}
+
+		file.close();
+	}
+}
+
 
 // Возращает число из текущей строки
 string bl::retCurRow(int pos, flash cur)

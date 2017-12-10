@@ -39,6 +39,16 @@ void viewBO(bl* main)
 	main->bPrintTable(mMenu.BO);
 }
 
+void editBO(bl* main)
+{
+	main->editBO(mMenu.BO);
+}
+
+void saveBO(bl* main)
+{
+	main->saveBO(mMenu.BO);
+}
+
 int read()
 {
 	int ans = -1;
@@ -85,6 +95,7 @@ void menu(bl* main)
 			cout << "\033[33m" << "Сохранить БО:" << "\033[0m"<<endl;
 		else
 			cout << "\033[33m" << "Печать БО:" << "\033[0m"<<endl;
+
 		cout << "1. Версия USB" << endl; 
 		cout << "2. Размер памяти" << endl;
 		cout << "3. Скорость чтения" << endl;
@@ -93,11 +104,13 @@ void menu(bl* main)
 		cout << "0. Выход" << endl;
 	}
 
+	cout << endl;
+
 	int ans = read();
 
 	cout << endl;
 
-	if (mMenu.menu == "vBO")
+	if (mMenu.menu == "vBO" || mMenu.menu == "eBO" || mMenu.menu == "wBO")
 	{
 		if (ans == 1)
 			mMenu.BO = "bType";
@@ -111,7 +124,20 @@ void menu(bl* main)
 			mMenu.BO = "price";
 
 		if (ans != 0)
-			viewBO(main);
+		{
+			if (mMenu.menu == "vBO")
+				viewBO(main);
+			else if (mMenu.menu == "eBO")
+			{
+				editBO(main);
+				viewBO(main);
+			}
+			else if (mMenu.menu == "wBO")
+			{
+				saveBO(main);
+				viewBO(main);
+			}
+		}
 
 		mMenu.menu = "main";
 		mMenu.min = 0;
@@ -124,6 +150,18 @@ void menu(bl* main)
 		if (ans == 2) 
 		{
 			mMenu.menu = "vBO";
+			mMenu.min = 0;
+			mMenu.max = 5;
+		}
+		if (ans == 3) 
+		{
+			mMenu.menu = "eBO";
+			mMenu.min = 0;
+			mMenu.max = 5;
+		}
+		if (ans == 4) 
+		{
+			mMenu.menu = "wBO";
 			mMenu.min = 0;
 			mMenu.max = 5;
 		}
@@ -149,9 +187,6 @@ int main()
 	mMenu.close = false;
 	while (!mMenu.close)
 		menu(main);
-
-	// cout << endl;
-	// main->editBO("bType");
 
 	// cout << endl;
 	// main->bPrintTable("bType");
