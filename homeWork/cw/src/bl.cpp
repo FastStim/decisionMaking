@@ -8,6 +8,8 @@ struct flash
 	int price;
 };
 
+
+
 class bl
 {
 public:
@@ -56,7 +58,6 @@ private:
 	void bPrintHeader(string);
 	void mPrintLine(vector<int>);
 	void printSpace(int, int);
-
 };
 
 bl::bl (string model, string mBType = "", string mBSize = "", string mBRSpeed = "", string mBWSpeed = "", string mBPrice = "")
@@ -657,7 +658,7 @@ vector<float> bl::turn (vector<vector<int>> BO)
 			}
 		}
 
-		dm.push_back(dm);		
+		dm.push_back(temp);		
 	}
 
 	return dm;
@@ -677,7 +678,7 @@ vector<int> bl::other (vector<int> cur)
 void bl::printBO(int type, string curBO)
 {
 	vector<int> BO;
-	vector<int> fBO;
+	vector<float> fBO;
 	int pos = 0;
 	if (curBO == "bType")
 	{
@@ -731,15 +732,17 @@ void bl::printBO(int type, string curBO)
 	else if (type == 3)
 	{
 		cout << "\033[33m" << "Турнирный механизм:" << "\033[0m" << endl;
-		float j = 0;
+		float j = -1;
 		for (int i = 0; i < fBO.size(); i++)
 		{
 			if (fBO[i] > j)
-				j = fBO[j];
+				j = fBO[i];
 		}
 		for (int i = 0; i < fBO.size(); i++)
 		{
 			if (fBO[i] == j)
 				cout << allFlash[i].name << " (" << "\033[33m"<< retCurRow(pos, allFlash[i]) << "\033[0m" << ") " << "Сумма: " << fBO[i] << endl;
+		}
 	}
 }
+

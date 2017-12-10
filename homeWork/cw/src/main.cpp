@@ -11,8 +11,10 @@ struct menu
 };
 
 menu mMenu;
+// Первое какое меню 
 
-void viewAllTable(bl* main){
+void viewAllTable(bl* main)
+{
 	main->mPrintTable();
 
 	cout << endl;
@@ -48,7 +50,8 @@ void saveBO(bl* main)
 	main->saveBO(mMenu.BO);
 }
 
-void meh(bl* main) {
+void meh(bl* main)
+{
 	main->meh(mMenu.BO);
 }
 
@@ -150,6 +153,7 @@ void menu(bl* main)
 				cout << endl;
 				main->printBO(1, mMenu.BO);
 				main->printBO(2, mMenu.BO);
+				main->printBO(3, mMenu.BO);
 			}
 
 		}
