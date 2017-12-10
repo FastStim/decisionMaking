@@ -55,6 +55,15 @@ void meh(bl* main)
 	main->meh(mMenu.BO);
 }
 
+void mehAll(bl* main)
+{
+	main->meh("bType");
+	main->meh("bSize");
+	main->meh("rSpeed");
+	main->meh("wSpeed");
+	main->meh("price");
+}
+
 int read()
 {
 	int ans = -1;
@@ -91,10 +100,12 @@ void menu(bl* main)
 		cout << "4. Сохранить БО" << endl;
 		cout << "5. Печать всего" << endl;
 		cout << "6. Пройти алгоритмы" << endl;
+		cout << "7. Турнирный механизм" << endl;
+		cout << "8. Турнирый механизм сумма критериев" << endl;
 		cout << "0. Выход" << endl;
 	}
 
-	if (mMenu.menu == "vBO" || mMenu.menu == "eBO" || mMenu.menu == "wBO" || mMenu.menu == "meh")
+	if (mMenu.menu == "vBO" || mMenu.menu == "eBO" || mMenu.menu == "wBO" || mMenu.menu == "meh" || mMenu.menu == "turn")
 	{
 		if (mMenu.menu == "eBO")
 			cout << "\033[33m" << "Редактировать БО:" << "\033[0m"<<endl;
@@ -102,6 +113,8 @@ void menu(bl* main)
 			cout << "\033[33m" << "Сохранить БО:" << "\033[0m"<<endl;
 		else if (mMenu.menu == "meh")
 			cout << "\033[33m" << "Посчитать БО:" << "\033[0m"<<endl;
+		else if (mMenu.menu == "turn")
+			cout << "\033[33m" << "Посчитать БО и вывести турнирный:" << "\033[0m"<<endl;
 		else
 			cout << "\033[33m" << "Печать БО:" << "\033[0m"<<endl;
 
@@ -119,7 +132,7 @@ void menu(bl* main)
 
 	cout << endl;
 
-	if (mMenu.menu == "vBO" || mMenu.menu == "eBO" || mMenu.menu == "wBO" || mMenu.menu == "meh")
+	if (mMenu.menu == "vBO" || mMenu.menu == "eBO" || mMenu.menu == "wBO" || mMenu.menu == "meh" || mMenu.menu == "turn")
 	{
 		if (ans == 1)
 			mMenu.BO = "bType";
@@ -155,12 +168,20 @@ void menu(bl* main)
 				main->printBO(2, mMenu.BO);
 				main->printBO(3, mMenu.BO);
 			}
+			else if (mMenu.menu == "turn")
+			{
+				meh(main);
+				viewBO(main);
+
+				cout << endl;
+				main->printBO(4, mMenu.BO);
+			}
 
 		}
 
 		mMenu.menu = "main";
 		mMenu.min = 0;
-		mMenu.max = 6;
+		mMenu.max = 8;
 	} 
 	else if (mMenu.menu == "main")
 	{
@@ -194,12 +215,22 @@ void menu(bl* main)
 			mMenu.max = 5;
 		}
 
+		if (ans == 7) 
+		{
+			mMenu.menu = "turn";
+			mMenu.min = 0;
+			mMenu.max = 5;
+		}
+
+		if (ans == 8) 
+		{
+			mehAll(main);
+			main->printBO(5, mMenu.BO);
+		}
+
 		if (ans == 0)
 			mMenu.close = true;
 	}
-	
-
-	
 }
 
 
@@ -209,7 +240,7 @@ int main()
 	
 	mMenu.menu = "main";
 	mMenu.min = 0;
-	mMenu.max = 6;
+	mMenu.max = 8;
 	mMenu.close = false;
 	while (!mMenu.close)
 		menu(main);

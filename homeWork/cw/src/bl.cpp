@@ -44,8 +44,11 @@ private:
 	vector<float> fWSpeed;
 	vector<float> fPrice;
 
+	vector<float> prior;
+
 	vector<flash> mParser(string);
 	vector<vector<int>> bParser(string);
+	vector<float> pParser(string);
 
 	vector<int> dom (vector<vector<int>>);
 	vector<int> block (vector<vector<int>>);
@@ -74,6 +77,38 @@ bl::bl (string model, string mBType = "", string mBSize = "", string mBRSpeed = 
 		bWSpeed = bParser(mBWSpeed);
 	if (mBPrice != "")
 		bPrice = bParser(mBPrice);
+
+	prior = pParser("config.csv");
+}
+
+vector<float> bl::pParser(string csv)
+{
+	ifstream file(csv);
+	string str;
+	
+	vector<float> curFlash;
+
+	while(getline(file,str))
+	{
+		string delim(";");
+		size_t prev = 0;
+		size_t next;
+		size_t delta = delim.length();
+
+		int i = 0;
+
+		while((next = str.find(delim, prev)) != string::npos)
+		{
+			string tmp = str.substr(prev, next-prev);
+			curFlash.push_back(stof(tmp));
+			prev = next + delta;
+			i++;
+		}
+		
+	}
+
+	file.close();
+	return curFlash;
 }
 
 // Разбор основной таблицы
@@ -559,9 +594,6 @@ void bl::meh(string curBO)
 
 	cur = other(cur);
 
-	for (int i = 0; i < cur.size(); i++)
-		cout << cur[i] << " ";
-	cout<< endl;
 	if (curBO == "bType")
 	{
 		rType = cur;
@@ -658,7 +690,7 @@ vector<float> bl::turn (vector<vector<int>> BO)
 			}
 		}
 
-		dm.push_back(temp);		
+		dm.push_back(temp*prior[i]);		
 	}
 
 	return dm;
@@ -744,5 +776,77 @@ void bl::printBO(int type, string curBO)
 				cout << allFlash[i].name << " (" << "\033[33m"<< retCurRow(pos, allFlash[i]) << "\033[0m" << ") " << "Сумма: " << fBO[i] << endl;
 		}
 	}
+
+	else if (type == 4)
+	{
+		cout << "\033[33m" << "Турнирный механизм:" << "\033[0m" << endl;
+
+		vector<float> temp;
+		
+		float l = 1000;
+		for (int i = 0; i < fBO.size(); i++)
+		{
+			float m = -1;
+			for (int j = 0; j < fBO.size(); j++)	
+			{
+				if (m < fBO[j] && l > fBO[j])
+					m = fBO[j];
+			}
+
+			l = m;
+			temp.push_back(l);
+		}
+
+		for (int i = 0; i < temp.size(); i++)
+		{
+			int pc = 0;
+			for (int j = 0; j < temp.size(); j++){
+				if (temp[i] == fBO[j])
+					pc = j;
+			}
+
+
+			cout << i+1 << ": " << allFlash[pc].name << " (" << "\033[33m"<< retCurRow(pos, allFlash[pc]) << "\033[0m" << ") " << "Сумма: " << temp[i] << endl;
+		}
+	}
+	else if (type == 5)
+	{
+		cout << "\033[33m" << "Турнирный механизм(сумма по всем критериям):" << "\033[0m" << endl;
+
+		vector<float> allBO;
+		vector<float> temp;
+
+		for (int i = 0; i < fType.size(); i++)
+		{
+			allBO.push_back(fType[i] + fSize[i] + fRSpeed[i] + fWSpeed[i] + fPrice[i]);
+		}
+
+		float l = 1000;
+
+		for (int i = 0; i < allBO.size(); i++)
+		{
+			float m = -1;
+			for (int j = 0; j < allBO.size(); j++)	
+			{
+				if (m < allBO[j] && l > allBO[j])
+					m = allBO[j];
+			}
+
+			l = m;
+			temp.push_back(l);
+		}
+
+		for (int i = 0; i < temp.size(); i++)
+		{
+			int pc = 0;
+			for (int j = 0; j < temp.size(); j++){
+				if (temp[i] == allBO[j])
+					pc = j;
+			}
+
+			cout << i+1 << ": " << allFlash[pc].name << " Сумма: " << temp[i] << endl;
+		}
+	}
+
 }
 
