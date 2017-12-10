@@ -11,7 +11,6 @@ struct menu
 };
 
 menu mMenu;
-// Первое какое меню 
 
 void viewAllTable(bl* main){
 	main->mPrintTable();
@@ -49,6 +48,10 @@ void saveBO(bl* main)
 	main->saveBO(mMenu.BO);
 }
 
+void meh(bl* main) {
+	main->meh(mMenu.BO);
+}
+
 int read()
 {
 	int ans = -1;
@@ -84,15 +87,18 @@ void menu(bl* main)
 		cout << "3. Редактровать БО" << endl;
 		cout << "4. Сохранить БО" << endl;
 		cout << "5. Печать всего" << endl;
+		cout << "6. Пройти алгоритмы" << endl;
 		cout << "0. Выход" << endl;
 	}
 
-	if (mMenu.menu == "vBO" || mMenu.menu == "eBO" || mMenu.menu == "wBO")
+	if (mMenu.menu == "vBO" || mMenu.menu == "eBO" || mMenu.menu == "wBO" || mMenu.menu == "meh")
 	{
 		if (mMenu.menu == "eBO")
 			cout << "\033[33m" << "Редактировать БО:" << "\033[0m"<<endl;
 		else if (mMenu.menu == "wBO")
 			cout << "\033[33m" << "Сохранить БО:" << "\033[0m"<<endl;
+		else if (mMenu.menu == "meh")
+			cout << "\033[33m" << "Посчитать БО:" << "\033[0m"<<endl;
 		else
 			cout << "\033[33m" << "Печать БО:" << "\033[0m"<<endl;
 
@@ -110,7 +116,7 @@ void menu(bl* main)
 
 	cout << endl;
 
-	if (mMenu.menu == "vBO" || mMenu.menu == "eBO" || mMenu.menu == "wBO")
+	if (mMenu.menu == "vBO" || mMenu.menu == "eBO" || mMenu.menu == "wBO" || mMenu.menu == "meh")
 	{
 		if (ans == 1)
 			mMenu.BO = "bType";
@@ -137,11 +143,20 @@ void menu(bl* main)
 				saveBO(main);
 				viewBO(main);
 			}
+			else if (mMenu.menu == "meh")
+			{
+				meh(main);
+				viewBO(main);
+				cout << endl;
+				main->printBO(1, mMenu.BO);
+				main->printBO(2, mMenu.BO);
+			}
+
 		}
 
 		mMenu.menu = "main";
 		mMenu.min = 0;
-		mMenu.max = 5;
+		mMenu.max = 6;
 	} 
 	else if (mMenu.menu == "main")
 	{
@@ -167,6 +182,13 @@ void menu(bl* main)
 		}
 		if (ans == 5)
 			viewAllTable(main);
+		
+		if (ans == 6) 
+		{
+			mMenu.menu = "meh";
+			mMenu.min = 0;
+			mMenu.max = 5;
+		}
 
 		if (ans == 0)
 			mMenu.close = true;
@@ -183,13 +205,10 @@ int main()
 	
 	mMenu.menu = "main";
 	mMenu.min = 0;
-	mMenu.max = 5;
+	mMenu.max = 6;
 	mMenu.close = false;
 	while (!mMenu.close)
 		menu(main);
-
-	// cout << endl;
-	// main->bPrintTable("bType");
 
 	return 0;
 }

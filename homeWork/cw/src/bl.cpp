@@ -15,8 +15,11 @@ public:
 
 	void mPrintTable();
 	void bPrintTable(string);
+	void printMeh(int, string);
 	void editBO(string);
 	void saveBO(string);
+	void meh(string);
+	void printBO(int, string);
 
 private:
 	vector<flash> allFlash;
@@ -27,8 +30,18 @@ private:
 	vector<vector<int>> bWSpeed;
 	vector<vector<int>> bPrice;
 
+	vector<int> rType;
+	vector<int> rSize;
+	vector<int> rRSpeed;
+	vector<int> rWSpeed;
+	vector<int> rPrice;
+
 	vector<flash> mParser(string);
 	vector<vector<int>> bParser(string);
+
+	vector<int> dom (vector<vector<int>>);
+	vector<int> block (vector<vector<int>>);
+	vector<int> other (vector<int>);
 
 	string retCurRow(int, flash);
 
@@ -502,4 +515,155 @@ string bl::retCurRow(int pos, flash cur)
 		default:
 			return "";
 	}
+}
+
+void bl::meh(string curBO)
+{
+	vector<vector<int>> BO;
+	if (curBO == "bType")
+		BO = bType;
+	else if (curBO == "bSize")
+		BO = bSize;
+	else if (curBO == "rSpeed")
+		BO = bRSpeed;
+	else if (curBO == "wSpeed")
+		BO = bWSpeed;
+	else if (curBO == "price")
+		BO = bPrice;
+
+	vector<int> cur;
+	vector<int> cur1 = dom(BO);
+	vector<int> cur2 = block(BO);
+
+	for (int i = 0; i < cur1.size(); i++)
+	{
+		if (cur1[i] == 1 && cur2[i] == 0)
+			cur.push_back(3);
+		else if (cur1[i] == 1)
+			cur.push_back(1);
+		else if (cur2[i] == 0)
+			cur.push_back(0);
+		else
+			cur.push_back(2);
+	}
+
+	cur = other(cur);
+	for (int i = 0; i < cur.size(); i++)
+		cout << cur[i] << " ";
+	cout<< endl;
+	if (curBO == "bType")
+		rType = cur;
+	else if (curBO == "bSize")
+		rSize = cur;
+	else if (curBO == "rSpeed")
+		rRSpeed = cur;
+	else if (curBO == "wSpeed")
+		rWSpeed = cur;
+	else if (curBO == "price")
+		rPrice = cur;
+}
+
+vector<int> bl::dom (vector<vector<int>> BO)
+{
+	vector<int> dm;
+
+	for (int i = 0; i < BO.size(); i++)
+	{
+		int temp = 1;
+		for (int j = 0; j < BO[i].size(); j++)
+		{
+			if (i != j && BO[i][j] == 0)
+			{
+ 				temp = -1;
+				break;
+			}
+
+		}
+		dm.push_back(temp);
+	}
+
+	return dm;
+}
+
+vector<int> bl::block (vector<vector<int>> BO)
+{
+	vector<int> dm;
+
+	for (int i = 0; i < BO.size(); i++)
+	{
+		int temp = 0;
+		for (int j = 0; j < BO[i].size(); j++)
+		{
+			if (i != j && BO[j][i] == 1)
+			{
+				temp = -1;
+				break;
+			}
+		}
+		dm.push_back(temp);
+	}
+
+	return dm;
+}
+
+vector<int> bl::other (vector<int> cur)
+{
+	for (int i = 0; i < cur.size(); i++)
+	{
+		if (cur[i] == -1)
+			cur[i] = 2;
+	}
+
+	return cur;
+}
+
+void bl::printBO(int type, string curBO)
+{
+	vector<int> BO;
+	int pos = 0;
+	if (curBO == "bType")
+	{
+		pos = 1;
+		BO = rType;
+	}
+	else if (curBO == "bSize")
+	{
+		pos = 2;
+		BO = rSize;
+	}
+	else if (curBO == "rSpeed")
+	{
+		pos = 3;
+		BO = rRSpeed;
+	}
+	else if (curBO == "wSpeed")
+	{
+		pos = 4;
+		BO = rWSpeed;
+	}
+	else if (curBO == "price")
+	{
+		pos = 5;
+		BO = rPrice;
+	}
+
+	if (type == 1)
+	{
+		cout << "\033[33m" << "Механизм доминирования:" << "\033[0m" << endl;
+		for (int i = 0; i < BO.size(); i++)
+		{
+			if (BO[i] == 1 || BO[i] == 3)
+				cout << allFlash[i].name << " (" << "\033[33m"<< retCurRow(pos, allFlash[i]) << "\033[0m" << ") " << endl;
+		}
+	}
+	else if (type == 2)
+	{
+		cout << "\033[33m" << "Механизм блокировки:" << "\033[0m" << endl;
+		for (int i = 0; i < BO.size(); i++)
+		{
+			if (BO[i] == 0 || BO[i] == 3)
+				cout << allFlash[i].name << " (" << "\033[33m"<< retCurRow(pos, allFlash[i]) << "\033[0m" << ") " << endl;
+		}
+	}
+
 }
