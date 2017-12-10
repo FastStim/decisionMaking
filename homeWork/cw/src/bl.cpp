@@ -36,11 +36,18 @@ private:
 	vector<int> rWSpeed;
 	vector<int> rPrice;
 
+	vector<float> fType;
+	vector<float> fSize;
+	vector<float> fRSpeed;
+	vector<float> fWSpeed;
+	vector<float> fPrice;
+
 	vector<flash> mParser(string);
 	vector<vector<int>> bParser(string);
 
 	vector<int> dom (vector<vector<int>>);
 	vector<int> block (vector<vector<int>>);
+	vector<float> turn (vector<vector<int>>);
 	vector<int> other (vector<int>);
 
 	string retCurRow(int, flash);
@@ -520,6 +527,7 @@ string bl::retCurRow(int pos, flash cur)
 void bl::meh(string curBO)
 {
 	vector<vector<int>> BO;
+
 	if (curBO == "bType")
 		BO = bType;
 	else if (curBO == "bSize")
@@ -534,6 +542,7 @@ void bl::meh(string curBO)
 	vector<int> cur;
 	vector<int> cur1 = dom(BO);
 	vector<int> cur2 = block(BO);
+	vector<float> cur3 = turn(BO);
 
 	for (int i = 0; i < cur1.size(); i++)
 	{
@@ -548,19 +557,36 @@ void bl::meh(string curBO)
 	}
 
 	cur = other(cur);
+
 	for (int i = 0; i < cur.size(); i++)
 		cout << cur[i] << " ";
 	cout<< endl;
 	if (curBO == "bType")
+	{
 		rType = cur;
+		fType = cur3;
+	}
 	else if (curBO == "bSize")
+	{
 		rSize = cur;
+		fSize = cur3;
+	}
 	else if (curBO == "rSpeed")
+	{
+
 		rRSpeed = cur;
+		fRSpeed = cur3;
+	}
 	else if (curBO == "wSpeed")
+	{
 		rWSpeed = cur;
+		fWSpeed = cur3;
+	}
 	else if (curBO == "price")
+	{
 		rPrice = cur;
+		fPrice = cur3;
+	}
 }
 
 vector<int> bl::dom (vector<vector<int>> BO)
@@ -606,6 +632,37 @@ vector<int> bl::block (vector<vector<int>> BO)
 	return dm;
 }
 
+vector<float> bl::turn (vector<vector<int>> BO)
+{
+	vector<float> dm;
+
+	for (int i = 0; i < BO.size(); i++)
+	{
+		float temp = 0;
+		for (int j = 0; j < BO[i].size(); j++)
+		{
+			if (i == j){
+				temp += 0;
+			}
+			else if (BO[i][j] > BO[j][i])
+			{
+				temp += 1;
+			}
+			else if (BO[i][j] < BO[j][i])
+			{
+				temp += 0;
+			}
+			else {
+				temp += 0.5;
+			}
+		}
+
+		dm.push_back(dm);		
+	}
+
+	return dm;
+}
+
 vector<int> bl::other (vector<int> cur)
 {
 	for (int i = 0; i < cur.size(); i++)
@@ -620,31 +677,37 @@ vector<int> bl::other (vector<int> cur)
 void bl::printBO(int type, string curBO)
 {
 	vector<int> BO;
+	vector<int> fBO;
 	int pos = 0;
 	if (curBO == "bType")
 	{
 		pos = 1;
 		BO = rType;
+		fBO = fType;
 	}
 	else if (curBO == "bSize")
 	{
 		pos = 2;
 		BO = rSize;
+		fBO = fSize;
 	}
 	else if (curBO == "rSpeed")
 	{
 		pos = 3;
 		BO = rRSpeed;
+		fBO = fRSpeed;
 	}
 	else if (curBO == "wSpeed")
 	{
 		pos = 4;
 		BO = rWSpeed;
+		fBO = fRSpeed;
 	}
 	else if (curBO == "price")
 	{
 		pos = 5;
 		BO = rPrice;
+		fBO = fPrice;
 	}
 
 	if (type == 1)
@@ -665,5 +728,18 @@ void bl::printBO(int type, string curBO)
 				cout << allFlash[i].name << " (" << "\033[33m"<< retCurRow(pos, allFlash[i]) << "\033[0m" << ") " << endl;
 		}
 	}
-
+	else if (type == 3)
+	{
+		cout << "\033[33m" << "Турнирный механизм:" << "\033[0m" << endl;
+		float j = 0;
+		for (int i = 0; i < fBO.size(); i++)
+		{
+			if (fBO[i] > j)
+				j = fBO[j];
+		}
+		for (int i = 0; i < fBO.size(); i++)
+		{
+			if (fBO[i] == j)
+				cout << allFlash[i].name << " (" << "\033[33m"<< retCurRow(pos, allFlash[i]) << "\033[0m" << ") " << "Сумма: " << fBO[i] << endl;
+	}
 }
